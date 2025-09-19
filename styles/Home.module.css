@@ -1,0 +1,209 @@
+.main {
+  min-height: 100vh;
+  background-image: url('../public/Background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  margin-top: 20vh;
+}
+
+.title {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: normal;
+  margin-bottom: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.inputRow {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+  justify-content: center;
+}
+
+.inputGroup {
+  flex: 1;
+  text-align: left;
+}
+
+.label {
+  display: block;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: 'IBM Plex Sans', sans-serif;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(200, 230, 150, 0.9);
+  color: #333;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.input:focus,
+.select:focus {
+  background-color: rgba(200, 230, 150, 1);
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+  padding-right: 50px;
+}
+
+.submitButton {
+  width: 300px;
+  height: 80px;
+  background-image: url('../public/btn.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+  background-color: transparent;
+}
+
+.submitButton span {
+  display: none;
+}
+
+/* 4K screen scaling */
+@media (min-width: 3840px) {
+  .container {
+    margin-top: 25vh;
+    max-width: 1200px;
+  }
+  
+  .inputRow {
+    max-width: 1200px;
+    gap: 4rem;
+  }
+  
+  .label {
+    color: #FFF;
+    font-family: "IBM Plex Sans";
+    font-size: 80px;
+    font-style: normal;
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+  
+  .input,
+  .select {
+    color: #004316;
+    font-family: "IBM Plex Sans";
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 500;
+    padding: 40px 50px;
+    border-radius: 20px;
+    width: 996px;
+    height: 212px;
+  }
+  
+  .select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23004316' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 30px center;
+    background-size: 40px;
+    padding-right: 80px;
+  }
+  
+  .select option {
+    color: #004316;
+    font-family: "IBM Plex Sans";
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 500;
+    padding: 20px;
+    height: 212px;
+    line-height: 212px;
+  }
+  
+  .form {
+    gap: 8rem;
+  }
+  
+  .submitButton {
+    width: 996px;
+    height: 212px;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .inputRow {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .label {
+    font-size: 1.3rem;
+  }
+  
+  .input,
+  .select {
+    font-size: 1rem;
+    padding: 12px 15px;
+  }
+  
+  .submitButton {
+    width: 250px;
+    height: 65px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 10px;
+  }
+  
+  .inputRow {
+    gap: 1rem;
+  }
+  
+  .label {
+    font-size: 1.2rem;
+  }
+  
+  .submitButton {
+    width: 200px;
+    height: 50px;
+  }
+}

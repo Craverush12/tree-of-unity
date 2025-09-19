@@ -1,0 +1,63 @@
+.main {
+  min-height: 100vh;
+  background-image: url('../public/Login.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.beginButton {
+  background-image: url('../public/begin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  width: auto;
+  height: auto;
+  min-width: 200px;
+  min-height: 60px;
+  margin-top: 20vh;
+}
+
+.beginButton:hover {
+  transform: scale(1.05);
+}
+
+.beginButton:active {
+  transform: scale(0.98);
+}
+
+/* 4K screen scaling */
+@media (min-width: 3840px) {
+  .beginButton {
+    width: 740px;
+    height: 252px;
+    margin-top: 40vh;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .beginButton {
+    min-width: 180px;
+    min-height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 10px;
+  }
+  
+  .beginButton {
+    min-width: 160px;
+    min-height: 45px;
+    margin-top: 15vh;
+  }
+}
