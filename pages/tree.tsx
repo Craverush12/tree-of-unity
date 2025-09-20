@@ -7,93 +7,83 @@ export default function Tree() {
   const leafPlacerRef = useRef<any>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Manual Leaf Placer Class (exact same logic as tree.html)
+  // Improved Leaf Placer Class with better distribution
   class ManualLeafPlacer {
     occupiedPositions: Array<{x: number, y: number}> = []
     currentIndex: number = 0
-    minDistance: number = 45
+    minDistance: number = 25 // Reduced for better distribution
+    branchAreas: Array<{name: string, positions: Array<{x: number, y: number}>}> = []
+    areaUsageCount: Array<number> = []
     
-    leafPositions = [
-      // Main trunk upper branches - scaled for 2160x3840 (1.8x scale)
-      {x: 1080, y: 450}, {x: 1116, y: 504}, {x: 1044, y: 540}, {x: 1152, y: 576}, {x: 1008, y: 630},
-      {x: 1188, y: 684}, {x: 972, y: 720}, {x: 1224, y: 756}, {x: 936, y: 792}, {x: 1260, y: 828},
+    constructor() {
+      this.initializeBranchAreas()
+    }
+    
+    initializeBranchAreas() {
+      // Scale positions to match SVG viewBox (1211x1393)
+      const scaleX = 1211 / 2160
+      const scaleY = 1393 / 3840
       
-      // Left main branch cluster - scaled for 2160x3840
-      {x: 810, y: 576}, {x: 756, y: 630}, {x: 864, y: 684}, {x: 702, y: 720}, {x: 918, y: 756},
-      {x: 648, y: 792}, {x: 972, y: 828}, {x: 594, y: 864}, {x: 1026, y: 900}, {x: 540, y: 936},
+      this.branchAreas = [
+        {
+          name: "upper_left",
+          positions: [
+            {x: 350, y: 200}, {x: 320, y: 250}, {x: 380, y: 300}, {x: 290, y: 350}, {x: 410, y: 400},
+            {x: 260, y: 450}, {x: 440, y: 500}, {x: 230, y: 550}, {x: 470, y: 600}, {x: 200, y: 650}
+          ]
+        },
+        {
+          name: "upper_right", 
+          positions: [
+            {x: 850, y: 200}, {x: 880, y: 250}, {x: 820, y: 300}, {x: 910, y: 350}, {x: 790, y: 400},
+            {x: 940, y: 450}, {x: 760, y: 500}, {x: 970, y: 550}, {x: 730, y: 600}, {x: 1000, y: 650}
+          ]
+        },
+        {
+          name: "left_branches",
+          positions: [
+            {x: 450, y: 400}, {x: 400, y: 500}, {x: 500, y: 600}, {x: 350, y: 700}, {x: 550, y: 800},
+            {x: 300, y: 900}, {x: 600, y: 1000}, {x: 250, y: 1100}, {x: 650, y: 1200}, {x: 200, y: 1300}
+          ]
+        },
+        {
+          name: "right_branches",
+          positions: [
+            {x: 750, y: 400}, {x: 800, y: 500}, {x: 700, y: 600}, {x: 850, y: 700}, {x: 650, y: 800},
+            {x: 900, y: 900}, {x: 600, y: 1000}, {x: 950, y: 1100}, {x: 550, y: 1200}, {x: 1000, y: 1300}
+          ]
+        },
+        {
+          name: "center_trunk",
+          positions: [
+            {x: 580, y: 500}, {x: 620, y: 600}, {x: 540, y: 700}, {x: 660, y: 800}, {x: 500, y: 900},
+            {x: 700, y: 1000}, {x: 480, y: 1100}, {x: 720, y: 1200}, {x: 460, y: 1300}, {x: 740, y: 1350}
+          ]
+        },
+        {
+          name: "lower_left",
+          positions: [
+            {x: 350, y: 800}, {x: 300, y: 900}, {x: 400, y: 1000}, {x: 250, y: 1100}, {x: 450, y: 1200},
+            {x: 200, y: 1300}, {x: 500, y: 1350}, {x: 150, y: 1380}, {x: 550, y: 1390}
+          ]
+        },
+        {
+          name: "lower_right",
+          positions: [
+            {x: 850, y: 800}, {x: 900, y: 900}, {x: 800, y: 1000}, {x: 950, y: 1100}, {x: 750, y: 1200},
+            {x: 1000, y: 1300}, {x: 700, y: 1350}, {x: 1050, y: 1380}, {x: 650, y: 1390}
+          ]
+        }
+      ]
       
-      // Right main branch cluster - scaled for 2160x3840
-      {x: 1350, y: 576}, {x: 1404, y: 630}, {x: 1296, y: 684}, {x: 1458, y: 720}, {x: 1242, y: 756},
-      {x: 1512, y: 792}, {x: 1188, y: 828}, {x: 1566, y: 864}, {x: 1134, y: 900}, {x: 1620, y: 936},
-      
-      // Upper left canopy - scaled for 2160x3840
-      {x: 630, y: 396}, {x: 576, y: 450}, {x: 684, y: 504}, {x: 522, y: 540}, {x: 738, y: 576},
-      {x: 468, y: 612}, {x: 792, y: 648}, {x: 414, y: 684}, {x: 846, y: 720}, {x: 360, y: 756},
-      
-      // Upper right canopy - scaled for 2160x3840
-      {x: 1530, y: 396}, {x: 1584, y: 450}, {x: 1476, y: 504}, {x: 1638, y: 540}, {x: 1422, y: 576},
-      {x: 1692, y: 612}, {x: 1368, y: 648}, {x: 1746, y: 684}, {x: 1314, y: 720}, {x: 1800, y: 756},
-      
-      // Middle left branches - scaled for 2160x3840
-      {x: 774, y: 936}, {x: 828, y: 990}, {x: 720, y: 1044}, {x: 882, y: 1098}, {x: 666, y: 1152},
-      {x: 936, y: 1206}, {x: 612, y: 1260}, {x: 990, y: 1314}, {x: 558, y: 1368}, {x: 1044, y: 1422},
-      
-      // Middle right branches - scaled for 2160x3840
-      {x: 1386, y: 936}, {x: 1332, y: 990}, {x: 1440, y: 1044}, {x: 1278, y: 1098}, {x: 1494, y: 1152},
-      {x: 1224, y: 1206}, {x: 1548, y: 1260}, {x: 1170, y: 1314}, {x: 1602, y: 1368}, {x: 1116, y: 1422},
-      
-      // Lower left canopy - scaled for 2160x3840
-      {x: 612, y: 1116}, {x: 684, y: 1170}, {x: 540, y: 1224}, {x: 756, y: 1278}, {x: 468, y: 1332},
-      {x: 828, y: 1386}, {x: 396, y: 1440}, {x: 900, y: 1494}, {x: 324, y: 1548}, {x: 972, y: 1602},
-      
-      // Lower right canopy - scaled for 2160x3840
-      {x: 1548, y: 1116}, {x: 1476, y: 1170}, {x: 1620, y: 1224}, {x: 1404, y: 1278}, {x: 1692, y: 1332},
-      {x: 1332, y: 1386}, {x: 1764, y: 1440}, {x: 1260, y: 1494}, {x: 1836, y: 1548}, {x: 1188, y: 1602},
-      
-      // Center trunk area - scaled for 2160x3840
-      {x: 1026, y: 756}, {x: 1134, y: 792}, {x: 990, y: 828}, {x: 1170, y: 864}, {x: 954, y: 900},
-      {x: 1206, y: 936}, {x: 918, y: 972}, {x: 1242, y: 1008}, {x: 882, y: 1044}, {x: 1278, y: 1080},
-      
-      // Outer edge fillers - left side - scaled for 2160x3840
-      {x: 450, y: 540}, {x: 360, y: 630}, {x: 324, y: 720}, {x: 270, y: 810}, {x: 216, y: 900},
-      {x: 180, y: 990}, {x: 144, y: 1080}, {x: 108, y: 1170}, {x: 72, y: 1260}, {x: 36, y: 1350},
-      
-      // Outer edge fillers - right side - scaled for 2160x3840
-      {x: 1710, y: 540}, {x: 1800, y: 630}, {x: 1836, y: 720}, {x: 1890, y: 810}, {x: 1944, y: 900},
-      {x: 1980, y: 990}, {x: 2016, y: 1080}, {x: 2052, y: 1170}, {x: 2088, y: 1260}, {x: 2124, y: 1350},
-      
-      // Top canopy fillers - scaled for 2160x3840
-      {x: 720, y: 324}, {x: 900, y: 360}, {x: 1080, y: 396}, {x: 1260, y: 360}, {x: 1440, y: 324},
-      {x: 630, y: 288}, {x: 810, y: 252}, {x: 990, y: 288}, {x: 1170, y: 252}, {x: 1350, y: 288},
-      {x: 1530, y: 252}, {x: 540, y: 216}, {x: 1620, y: 216}, {x: 450, y: 180}, {x: 1710, y: 180},
-      
-      // Mid-height fillers - scaled for 2160x3840
-      {x: 576, y: 666}, {x: 684, y: 702}, {x: 792, y: 738}, {x: 900, y: 774}, {x: 1008, y: 810},
-      {x: 1116, y: 846}, {x: 1224, y: 882}, {x: 1332, y: 918}, {x: 1440, y: 954}, {x: 1548, y: 990},
-      {x: 1656, y: 1026}, {x: 504, y: 1062}, {x: 612, y: 1098}, {x: 720, y: 1134}, {x: 828, y: 1170},
-      {x: 936, y: 1206}, {x: 1044, y: 1242}, {x: 1152, y: 1278}, {x: 1260, y: 1314}, {x: 1368, y: 1350},
-      {x: 1476, y: 1386}, {x: 1584, y: 1422}, {x: 1692, y: 1458}, {x: 1800, y: 1494},
-      
-      // Lower fillers - scaled for 2160x3840
-      {x: 540, y: 1116}, {x: 648, y: 1152}, {x: 756, y: 1188}, {x: 864, y: 1224}, {x: 972, y: 1260},
-      {x: 1080, y: 1296}, {x: 1188, y: 1332}, {x: 1296, y: 1368}, {x: 1404, y: 1404}, {x: 1512, y: 1440},
-      {x: 1620, y: 1476}, {x: 1728, y: 1512}, {x: 1836, y: 1548}, {x: 1944, y: 1584}, {x: 2052, y: 1620},
-      {x: 504, y: 1656}, {x: 612, y: 1692}, {x: 720, y: 1728}, {x: 828, y: 1764}, {x: 936, y: 1800},
-      {x: 1044, y: 1836}, {x: 1152, y: 1872}, {x: 1260, y: 1908}, {x: 1368, y: 1944}, {x: 1476, y: 1980},
-      {x: 1584, y: 2016}, {x: 1692, y: 2052}, {x: 1800, y: 2088}, {x: 1908, y: 2124}, {x: 2016, y: 2160},
-      
-      // Strategic branch tips and intersections - scaled for 2160x3840
-      {x: 630, y: 504}, {x: 684, y: 576}, {x: 756, y: 648}, {x: 828, y: 720}, {x: 900, y: 792},
-      {x: 972, y: 864}, {x: 1044, y: 936}, {x: 1116, y: 1008}, {x: 1188, y: 1080}, {x: 1260, y: 1152},
-      {x: 1332, y: 1224}, {x: 1404, y: 1296}, {x: 1476, y: 1368}, {x: 1548, y: 1440}, {x: 1620, y: 1512},
-      {x: 1692, y: 1584}, {x: 1764, y: 1656}, {x: 1836, y: 1728}, {x: 1908, y: 1800}, {x: 1980, y: 1872},
-      
-      // Additional natural distribution points - scaled for 2160x3840
-      {x: 576, y: 576}, {x: 648, y: 648}, {x: 720, y: 720}, {x: 792, y: 792}, {x: 864, y: 864},
-      {x: 936, y: 936}, {x: 1008, y: 1008}, {x: 1080, y: 1080}, {x: 1152, y: 1152}, {x: 1224, y: 1224},
-      {x: 1296, y: 1296}, {x: 1368, y: 1368}, {x: 1440, y: 1440}, {x: 1512, y: 1512}, {x: 1584, y: 1584},
-      {x: 1656, y: 1656}, {x: 1728, y: 1728}, {x: 1800, y: 1800}, {x: 1872, y: 1872}, {x: 1944, y: 1944}
-    ]
+      // Initialize usage count for each area
+      this.areaUsageCount = new Array(this.branchAreas.length).fill(0)
+    }
+    
+    // Get all positions from all areas
+    get allPositions() {
+      return this.branchAreas.flatMap(area => area.positions)
+    }
     
     isPositionValid(pos: {x: number, y: number}, minDistance: number = this.minDistance) {
       for (const occupied of this.occupiedPositions) {
@@ -108,24 +98,47 @@ export default function Tree() {
     }
     
     placeLeaf() {
-      // Try to find a valid position from our manual array (EXACT SAME AS tree.html)
-      for (let i = 0; i < this.leafPositions.length; i++) {
-        const candidateIndex = (this.currentIndex + i) % this.leafPositions.length
-        const candidate = this.leafPositions[candidateIndex]
+      // Find the least used branch area
+      const minUsage = Math.min(...this.areaUsageCount)
+      const leastUsedAreas = this.branchAreas.filter((_, index) => this.areaUsageCount[index] === minUsage)
+      
+      // Try to place in the least used area first
+      for (const area of leastUsedAreas) {
+        const areaIndex = this.branchAreas.findIndex(a => a.name === area.name)
+        const shuffledPositions = this.shuffleArray([...area.positions])
         
+        for (const candidate of shuffledPositions) {
+          if (this.isPositionValid(candidate)) {
+            this.occupiedPositions.push(candidate)
+            this.areaUsageCount[areaIndex]++
+            console.log(`Placed leaf in ${area.name} at position ${this.occupiedPositions.length}: (${candidate.x}, ${candidate.y})`)
+            return candidate
+          }
+        }
+      }
+      
+      // If least used areas are full, try all areas with random selection
+      const allShuffledPositions = this.shuffleArray(this.allPositions)
+      for (const candidate of allShuffledPositions) {
         if (this.isPositionValid(candidate)) {
           this.occupiedPositions.push(candidate)
-          this.currentIndex = (candidateIndex + 1) % this.leafPositions.length
+          // Find which area this position belongs to and increment its count
+          for (let i = 0; i < this.branchAreas.length; i++) {
+            if (this.branchAreas[i].positions.some(pos => pos.x === candidate.x && pos.y === candidate.y)) {
+              this.areaUsageCount[i]++
+              break
+            }
+          }
           console.log(`Placed leaf at position ${this.occupiedPositions.length}: (${candidate.x}, ${candidate.y})`)
           return candidate
         }
       }
       
-      // If all positions are occupied, find the least crowded one (EXACT SAME AS tree.html)
+      // If all positions are occupied, find the least crowded one
       let bestPosition = null
       let maxMinDistance = 0
       
-      for (const candidate of this.leafPositions) {
+      for (const candidate of this.allPositions) {
         let minDistance = Infinity
         for (const occupied of this.occupiedPositions) {
           const distance = Math.sqrt(
@@ -146,9 +159,19 @@ export default function Tree() {
         return bestPosition
       }
       
-      // Fallback: return center position - scaled for 2160x3840
+      // Fallback: return center position
       console.warn("All positions occupied, using fallback")
-      return { x: 1080, y: 720 }
+      return { x: 605, y: 700 }
+    }
+    
+    // Utility function to shuffle array
+    shuffleArray(array: Array<any>) {
+      const shuffled = [...array]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+      }
+      return shuffled
     }
     
     getLeafCount() {
@@ -158,6 +181,7 @@ export default function Tree() {
     reset() {
       this.occupiedPositions = []
       this.currentIndex = 0
+      this.areaUsageCount = new Array(this.branchAreas.length).fill(0)
       console.log("Manual leaf placer reset - all positions available")
     }
   }
