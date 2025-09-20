@@ -66,6 +66,7 @@
   transform: scale(0.98);
 }
 
+
 /* 4K screen scaling */
 @media (min-width: 3840px) {
   .leafImage {

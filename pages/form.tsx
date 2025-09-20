@@ -2,20 +2,65 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import { leavesDB } from '../lib/firebase'
 
 export default function Home() {
   const [name, setName] = useState('')
   const [city, setCity] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Submitted:', { name, city })
-    // Navigate to success page with user data
-    router.push({
-      pathname: '/success',
-      query: { name, city }
-    })
+    setIsSubmitting(true)
+    
+    try {
+      // Generate coordinates using the same logic as tree page
+      const leafPositions = [
+        {x: 600, y: 250}, {x: 620, y: 280}, {x: 580, y: 300}, {x: 640, y: 320}, {x: 560, y: 350},
+        {x: 660, y: 380}, {x: 540, y: 400}, {x: 680, y: 420}, {x: 520, y: 440}, {x: 700, y: 460},
+        {x: 450, y: 320}, {x: 420, y: 350}, {x: 480, y: 380}, {x: 390, y: 400}, {x: 510, y: 420},
+        {x: 360, y: 440}, {x: 540, y: 460}, {x: 330, y: 480}, {x: 570, y: 500}, {x: 300, y: 520},
+        {x: 750, y: 320}, {x: 780, y: 350}, {x: 720, y: 380}, {x: 810, y: 400}, {x: 690, y: 420},
+        {x: 840, y: 440}, {x: 660, y: 460}, {x: 870, y: 480}, {x: 630, y: 500}, {x: 900, y: 520},
+        {x: 350, y: 220}, {x: 320, y: 250}, {x: 380, y: 280}, {x: 290, y: 300}, {x: 410, y: 320},
+        {x: 260, y: 340}, {x: 440, y: 360}, {x: 230, y: 380}, {x: 470, y: 400}, {x: 200, y: 420},
+        {x: 850, y: 220}, {x: 880, y: 250}, {x: 820, y: 280}, {x: 910, y: 300}, {x: 790, y: 320},
+        {x: 940, y: 340}, {x: 760, y: 360}, {x: 970, y: 380}, {x: 730, y: 400}, {x: 1000, y: 420}
+      ]
+      
+      // Find available coordinates
+      let selectedPosition = null
+      for (const position of leafPositions) {
+        const isAvailable = await leavesDB.checkCoordinates(position.x, position.y)
+        if (isAvailable) {
+          selectedPosition = position
+          break
+        }
+      }
+      
+      // Fallback to center if no position found
+      if (!selectedPosition) {
+        selectedPosition = { x: 600, y: 400 }
+      }
+      
+      // Generate leaf properties
+      const leafTemplateId = Math.random() > 0.5 ? "leaf1" : "leaf2"
+      const angle = Math.floor(Math.random() * 360)
+      const scale = 0.5 + Math.random() * 0.7
+      
+      // Navigate to success page with user data (leaf will be added there)
+      router.push({
+        pathname: '/success',
+        query: { name, city }
+      })
+      
+    } catch (error) {
+      console.error('Error saving leaf:', error)
+      alert('Failed to add your leaf. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -60,8 +105,8 @@ export default function Home() {
               </div>
             </div>
             
-            <button type="submit" className={styles.submitButton}>
-              <span>Submit</span>
+            <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+              <span>{isSubmitting ? 'Adding Leaf...' : 'Submit'}</span>
             </button>
           </form>
         </div>
