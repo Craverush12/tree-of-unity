@@ -237,7 +237,7 @@ export default function Tree() {
     tempText.style.fontSize = "12px"
     tempText.style.fill = "white"
     tempText.style.fontFamily = "sans-serif"
-    tempText.style.fontWeight = "bold"
+    tempText.style.fontWeight = "medium"
     tempText.textContent = name
     
     // Temporarily add text to measure it (EXACT SAME AS tree.html)
@@ -270,7 +270,7 @@ export default function Tree() {
     text.style.fontSize = "12px"
     text.style.fill = "white"
     text.style.fontFamily = "sans-serif"
-    text.style.fontWeight = "bold"
+    text.style.fontWeight = "medium"
     text.textContent = name
     group.appendChild(text)
 
