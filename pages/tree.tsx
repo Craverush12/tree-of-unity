@@ -11,7 +11,7 @@ export default function Tree() {
   class ManualLeafPlacer {
     occupiedPositions: Array<{x: number, y: number}> = []
     currentIndex: number = 0
-    minDistance: number = 25 // Reduced for better distribution
+    minDistance: number = 15 // Reduced for better distribution in branch areas only
     branchAreas: Array<{name: string, positions: Array<{x: number, y: number}>}> = []
     areaUsageCount: Array<number> = []
     
@@ -28,52 +28,52 @@ export default function Tree() {
         {
           name: "upper_left",
           positions: [
-            {x: 350, y: 200}, {x: 320, y: 250}, {x: 380, y: 300}, {x: 290, y: 350}, {x: 410, y: 400},
-            {x: 260, y: 450}, {x: 440, y: 500}, {x: 230, y: 550}, {x: 470, y: 600}, {x: 200, y: 650}
+            // Natural branch clusters - following actual branch curves from SVG
+            {x: 250, y: 180}, {x: 280, y: 200}, {x: 220, y: 220}, {x: 300, y: 240}, {x: 180, y: 260},
+            {x: 320, y: 280}, {x: 200, y: 300}, {x: 350, y: 320}, {x: 160, y: 340}, {x: 380, y: 360},
+            {x: 240, y: 380}, {x: 360, y: 400}, {x: 200, y: 420}, {x: 400, y: 440}, {x: 180, y: 460},
+            {x: 420, y: 480}, {x: 220, y: 500}, {x: 380, y: 520}, {x: 160, y: 540}, {x: 440, y: 560},
+            {x: 260, y: 580}, {x: 360, y: 600}, {x: 200, y: 620}, {x: 400, y: 640}, {x: 180, y: 660},
+            {x: 420, y: 680}, {x: 240, y: 700}, {x: 380, y: 720}, {x: 160, y: 740}, {x: 440, y: 760}
           ]
         },
         {
           name: "upper_right", 
           positions: [
-            {x: 850, y: 200}, {x: 880, y: 250}, {x: 820, y: 300}, {x: 910, y: 350}, {x: 790, y: 400},
-            {x: 940, y: 450}, {x: 760, y: 500}, {x: 970, y: 550}, {x: 730, y: 600}, {x: 1000, y: 650}
+            // Natural branch clusters - following actual branch curves from SVG
+            {x: 950, y: 180}, {x: 920, y: 200}, {x: 980, y: 220}, {x: 900, y: 240}, {x: 1020, y: 260},
+            {x: 880, y: 280}, {x: 1000, y: 300}, {x: 850, y: 320}, {x: 1040, y: 340}, {x: 820, y: 360},
+            {x: 960, y: 380}, {x: 840, y: 400}, {x: 1000, y: 420}, {x: 800, y: 440}, {x: 1020, y: 460},
+            {x: 780, y: 480}, {x: 980, y: 500}, {x: 820, y: 520}, {x: 1040, y: 540}, {x: 760, y: 560},
+            {x: 940, y: 580}, {x: 840, y: 600}, {x: 1000, y: 620}, {x: 800, y: 640}, {x: 1020, y: 660},
+            {x: 780, y: 680}, {x: 960, y: 700}, {x: 820, y: 720}, {x: 1040, y: 740}, {x: 760, y: 760}
           ]
         },
         {
           name: "left_branches",
           positions: [
-            {x: 450, y: 400}, {x: 400, y: 500}, {x: 500, y: 600}, {x: 350, y: 700}, {x: 550, y: 800},
-            {x: 300, y: 900}, {x: 600, y: 1000}, {x: 250, y: 1100}, {x: 650, y: 1200}, {x: 200, y: 1300}
+            // Natural branch clusters - following actual branch curves from SVG
+            {x: 380, y: 420}, {x: 420, y: 440}, {x: 340, y: 460}, {x: 460, y: 480}, {x: 300, y: 500},
+            {x: 500, y: 520}, {x: 280, y: 540}, {x: 520, y: 560}, {x: 260, y: 580}, {x: 540, y: 600},
+            {x: 320, y: 620}, {x: 480, y: 640}, {x: 240, y: 660}, {x: 560, y: 680}, {x: 200, y: 700},
+            {x: 600, y: 720}, {x: 220, y: 740}, {x: 580, y: 760}, {x: 180, y: 780}, {x: 620, y: 800},
+            {x: 300, y: 820}, {x: 500, y: 840}, {x: 160, y: 860}, {x: 640, y: 880}, {x: 140, y: 900},
+            {x: 660, y: 920}, {x: 180, y: 940}, {x: 620, y: 960}, {x: 120, y: 980}, {x: 680, y: 1000}
           ]
         },
         {
           name: "right_branches",
           positions: [
-            {x: 750, y: 400}, {x: 800, y: 500}, {x: 700, y: 600}, {x: 850, y: 700}, {x: 650, y: 800},
-            {x: 900, y: 900}, {x: 600, y: 1000}, {x: 950, y: 1100}, {x: 550, y: 1200}, {x: 1000, y: 1300}
-          ]
-        },
-        {
-          name: "center_trunk",
-          positions: [
-            {x: 580, y: 500}, {x: 620, y: 600}, {x: 540, y: 700}, {x: 660, y: 800}, {x: 500, y: 900},
-            {x: 700, y: 1000}, {x: 480, y: 1100}, {x: 720, y: 1200}, {x: 460, y: 1300}, {x: 740, y: 1350}
-          ]
-        },
-        {
-          name: "lower_left",
-          positions: [
-            {x: 350, y: 800}, {x: 300, y: 900}, {x: 400, y: 1000}, {x: 250, y: 1100}, {x: 450, y: 1200},
-            {x: 200, y: 1300}, {x: 500, y: 1350}, {x: 150, y: 1380}, {x: 550, y: 1390}
-          ]
-        },
-        {
-          name: "lower_right",
-          positions: [
-            {x: 850, y: 800}, {x: 900, y: 900}, {x: 800, y: 1000}, {x: 950, y: 1100}, {x: 750, y: 1200},
-            {x: 1000, y: 1300}, {x: 700, y: 1350}, {x: 1050, y: 1380}, {x: 650, y: 1390}
+            // Natural branch clusters - following actual branch curves from SVG
+            {x: 720, y: 420}, {x: 680, y: 440}, {x: 760, y: 460}, {x: 640, y: 480}, {x: 800, y: 500},
+            {x: 600, y: 520}, {x: 820, y: 540}, {x: 580, y: 560}, {x: 840, y: 580}, {x: 560, y: 600},
+            {x: 780, y: 620}, {x: 620, y: 640}, {x: 860, y: 660}, {x: 540, y: 680}, {x: 900, y: 700},
+            {x: 500, y: 720}, {x: 880, y: 740}, {x: 520, y: 760}, {x: 920, y: 780}, {x: 480, y: 800},
+            {x: 700, y: 820}, {x: 600, y: 840}, {x: 940, y: 860}, {x: 460, y: 880}, {x: 960, y: 900},
+            {x: 440, y: 920}, {x: 980, y: 940}, {x: 420, y: 960}, {x: 1000, y: 980}, {x: 400, y: 1000}
           ]
         }
+        // Removed center_trunk, lower_left, and lower_right areas for better visual appearance
       ]
       
       // Initialize usage count for each area
@@ -272,10 +272,14 @@ export default function Tree() {
     text.style.fontFamily = "sans-serif"
     text.style.fontWeight = "medium"
     text.textContent = name
+    
+    // Counter-rotate the text to keep it upright regardless of leaf rotation
+    const finalAngle = angle || Math.floor(Math.random() * 360)
+    text.setAttribute("transform", `rotate(${-finalAngle})`)
+    
     group.appendChild(text)
 
     // Apply all transformations to the outer group (EXACT SAME AS tree.html)
-    const finalAngle = angle || Math.floor(Math.random() * 360)
     group.setAttribute("transform", `translate(${x},${y}) rotate(${finalAngle}) scale(${finalScale})`)
 
     // Animate growth - start with scale 0 and grow to full size (EXACT SAME AS tree.html)
