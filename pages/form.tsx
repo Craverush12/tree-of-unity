@@ -99,7 +99,7 @@ export default function Home() {
                   required
                 >
                   <option value="">Choose your city</option>
-                  <option value="Riyaadh">Riyaadh</option>
+                  <option value="Riyadh">Riyadh</option>
                   <option value="Jeddah">Jeddah</option>
                 </select>
               </div>

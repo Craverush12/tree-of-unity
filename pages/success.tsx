@@ -39,20 +39,15 @@ export default function Success() {
         selectedPosition = { x: 1080, y: 720 }
       }
       
-      // Generate leaf properties
-      const leafTemplateId = Math.random() > 0.5 ? "leaf1" : "leaf2"
-      const angle = Math.floor(Math.random() * 360)
-      const scale = 0.5 + Math.random() * 0.7
+      // Get the next available leafIndex (you might want to implement a proper counter)
+      const leafIndex = Math.floor(Math.random() * 170) // Temporary - should be proper counter
       
-      // Save to database
+      // Save to database with new structure
       const leafData = {
         name,
         city,
-        x: selectedPosition.x,
-        y: selectedPosition.y,
-        angle,
-        scale,
-        leaf_type: leafTemplateId
+        leafIndex,
+        created_at: new Date().toISOString()
       }
       
       await leavesDB.addLeaf(leafData)

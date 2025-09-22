@@ -1,0 +1,91 @@
+.treeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.leafPath {
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.leafPath:hover {
+  opacity: 0.8;
+}
+
+.leafName {
+  font-family: 'Arial', sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  user-select: none;
+}
+
+.treeInfo {
+  margin-top: 1rem;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.treeInfo p {
+  margin: 0.25rem 0;
+}
+
+/* Animation for new leaves */
+@keyframes leafAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes textAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.leafPath.newLeaf {
+  animation: leafAppear 0.5s ease-out;
+}
+
+.leafGroup {
+  transition: all 0.3s ease;
+}
+
+.leafGroup:hover .leafPath {
+  fill: #8BC34A;
+  transform: scale(1.05);
+}
+
+.leafGroup:hover .leafName {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .treeContainer {
+    padding: 1rem;
+  }
+  
+  .leafName {
+    font-size: 10px;
+  }
+}
