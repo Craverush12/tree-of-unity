@@ -14,6 +14,7 @@ export default function Tree() {
   const [recentAdditions, setRecentAdditions] = useState<Array<{name: string, leafIndex: number, timestamp: Date}>>([]);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [isAddingLeaf, setIsAddingLeaf] = useState(false);
+  const [newlyAddedLeaves, setNewlyAddedLeaves] = useState<Set<number>>(new Set());
 
   // Load existing leaves from database
   const loadExistingLeaves = async () => {
@@ -118,6 +119,18 @@ export default function Tree() {
         
         console.log('Adding new leaf from subscription:', leafIndex, newLeaf.name);
         
+        // Add to newly added leaves for glow effect (from subscription)
+        setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
+        
+        // Remove from newly added leaves after 3 seconds
+        setTimeout(() => {
+          setNewlyAddedLeaves(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(leafIndex);
+            return newSet;
+          });
+        }, 3000);
+        
         return {
           visibleLeaves: newVisibleLeaves,
           leafNames: newLeafNames,
@@ -184,6 +197,18 @@ export default function Tree() {
         ...prev.slice(0, 9) // Keep only last 10
       ]);
       
+      // Add to newly added leaves for glow effect
+      setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
+      
+      // Remove from newly added leaves after 3 seconds
+      setTimeout(() => {
+        setNewlyAddedLeaves(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(leafIndex);
+          return newSet;
+        });
+      }, 3000);
+      
       // Reset flag after a short delay
     setTimeout(() => {
         setIsAddingLeaf(false);
@@ -230,6 +255,7 @@ export default function Tree() {
           onLeafAdded={handleLeafAdded}
           onLeafRemoved={handleLeafRemoved}
           onNameSubmit={handleNameSubmit}
+          newlyAddedLeaves={newlyAddedLeaves}
         />
       </div>
     </>

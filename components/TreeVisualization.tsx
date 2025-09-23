@@ -4,6 +4,7 @@ import { TreeState, LeafData } from '../types/tree';
 import { loadAndExtractLeaves } from '../utils/leafExtractor';
 import Lottie from 'lottie-react';
 import leaflotAnimation from '../public/leaflot.json';
+import styles from '../styles/Tree.module.css';
 
 // Function to remove background from Lottie animation
 const removeLottieBackground = (animationData: any) => {
@@ -30,13 +31,15 @@ interface TreeVisualizationProps {
   onLeafAdded?: (leafIndex: number, name: string) => void;
   onLeafRemoved?: (leafIndex: number) => void;
   onNameSubmit?: (name: string) => void;
+  newlyAddedLeaves?: Set<number>;
 }
 
 const TreeVisualization: React.FC<TreeVisualizationProps> = ({
   treeState,
   onLeafAdded,
   onLeafRemoved,
-  onNameSubmit
+  onNameSubmit,
+  newlyAddedLeaves = new Set()
 }) => {
 
   const [leaves, setLeaves] = useState<LeafData[]>([]);
@@ -252,17 +255,14 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
         })}
         
         {/* Render named leaves (user-added leaves) */}
-        {(() => {
-          console.log('Rendering leaves:', treeState.visibleLeaves.size, 'leaves array:', leaves.length);
-          return null;
-        })()}
         {Array.from(treeState.visibleLeaves).map(leafIndex => {
           // Skip base leaves (last 40)
           const blockedIndices = getBlockedLeafIndices();
           if (blockedIndices.includes(leafIndex)) return null;
           
           const leafData = leaves[leafIndex];
-          console.log(`Rendering leaf ${leafIndex}:`, leafData);
+          const isNewlyAdded = newlyAddedLeaves.has(leafIndex);
+          const className = `${styles.leafPath} ${isNewlyAdded ? styles.newlyAdded : ''}`;
           if (!leafData) return null;
           
           return (
@@ -270,7 +270,7 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
               <path
                 d={leafData.path}
                 fill="#A6D061"
-                className="leaf-path"
+                className={className}
                 style={{
                   animation: 'leafAppear 0.6s ease-out',
                   transformOrigin: `${leafData.centerX}px ${leafData.centerY}px`

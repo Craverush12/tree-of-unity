@@ -61,6 +61,59 @@
   }
 }
 
+/* Glow animation for newly added leaves */
+@keyframes leafGlow {
+  0% {
+    filter: drop-shadow(0 0 20px #00FF00) drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 80px #00FF00);
+    transform: scale(1);
+  }
+  10% {
+    filter: drop-shadow(0 0 30px #00FF00) drop-shadow(0 0 50px #00FF00) drop-shadow(0 0 70px #00FF00) drop-shadow(0 0 90px #00FF00);
+    transform: scale(1.1);
+  }
+  20% {
+    filter: drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 100px #00FF00);
+    transform: scale(1.15);
+  }
+  30% {
+    filter: drop-shadow(0 0 35px #00FF00) drop-shadow(0 0 55px #00FF00) drop-shadow(0 0 75px #00FF00) drop-shadow(0 0 95px #00FF00);
+    transform: scale(1.12);
+  }
+  40% {
+    filter: drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 65px #00FF00) drop-shadow(0 0 85px #00FF00) drop-shadow(0 0 105px #00FF00);
+    transform: scale(1.18);
+  }
+  50% {
+    filter: drop-shadow(0 0 50px #00FF00) drop-shadow(0 0 70px #00FF00) drop-shadow(0 0 90px #00FF00) drop-shadow(0 0 110px #00FF00);
+    transform: scale(1.2);
+  }
+  60% {
+    filter: drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 100px #00FF00);
+    transform: scale(1.15);
+  }
+  70% {
+    filter: drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 65px #00FF00) drop-shadow(0 0 85px #00FF00) drop-shadow(0 0 105px #00FF00);
+    transform: scale(1.18);
+  }
+  80% {
+    filter: drop-shadow(0 0 35px #00FF00) drop-shadow(0 0 55px #00FF00) drop-shadow(0 0 75px #00FF00) drop-shadow(0 0 95px #00FF00);
+    transform: scale(1.12);
+  }
+  90% {
+    filter: drop-shadow(0 0 25px #00FF00) drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 65px #00FF00) drop-shadow(0 0 85px #00FF00);
+    transform: scale(1.08);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px #00FF00) drop-shadow(0 0 30px #00FF00) drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 60px #00FF00);
+    transform: scale(1.05);
+  }
+}
+
+/* Class for newly added leaves with glow effect */
+.newlyAdded {
+  animation: leafGlow 3s ease-in-out forwards;
+}
+
 .leafPath.newLeaf {
   animation: leafAppear 0.5s ease-out;
 }
