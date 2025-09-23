@@ -49,11 +49,22 @@ export default function Tree() {
         }
       });
       
+      // Calculate next available leaf index (skip blocked indices)
+      const maxUsedIndex = Math.max(...leaves.map((l, index) => l.leafIndex !== undefined ? l.leafIndex : index), 0);
+      let nextIndex = maxUsedIndex + 1;
+      const BASE_LEAVES_COUNT = 40;
+      const blockedStartIndex = 170 - BASE_LEAVES_COUNT; // 130
+      
+      // Skip blocked indices (130-169)
+      while (nextIndex >= blockedStartIndex && nextIndex < 170) {
+        nextIndex++;
+      }
+      
       setTreeState(prev => ({
         ...prev,
         visibleLeaves,
         leafNames,
-        nextLeafIndex: Math.max(...leaves.map((l, index) => l.leafIndex !== undefined ? l.leafIndex : index), 0) + 1
+        nextLeafIndex: nextIndex
       }));
       
       setHasLoaded(true);
@@ -131,10 +142,20 @@ export default function Tree() {
           });
         }, 3000);
         
+        // Calculate next available leaf index (skip blocked indices)
+        let nextIndex = Math.max(prev.nextLeafIndex, leafIndex + 1);
+        const BASE_LEAVES_COUNT = 40;
+        const blockedStartIndex = 170 - BASE_LEAVES_COUNT; // 130
+        
+        // Skip blocked indices (130-169)
+        while (nextIndex >= blockedStartIndex && nextIndex < 170) {
+          nextIndex++;
+        }
+        
         return {
           visibleLeaves: newVisibleLeaves,
           leafNames: newLeafNames,
-          nextLeafIndex: Math.max(prev.nextLeafIndex, leafIndex + 1),
+          nextLeafIndex: nextIndex,
           totalLeaves: prev.totalLeaves
         };
       });
@@ -151,8 +172,25 @@ export default function Tree() {
       // Set flag to prevent subscription from triggering
       setIsAddingLeaf(true);
       
-      // Get the next leaf position from the SVG
-      const leafIndex = treeState.nextLeafIndex;
+      // Find the next available leaf index (skip blocked indices)
+      const BASE_LEAVES_COUNT = 40;
+      const blockedStartIndex = 170 - BASE_LEAVES_COUNT; // 130
+      
+      let leafIndex = treeState.nextLeafIndex;
+      
+      // Skip blocked indices (130-169)
+      while (leafIndex >= blockedStartIndex && leafIndex < 170) {
+        leafIndex++;
+      }
+      
+      // If we've reached the end, we can't add more leaves
+      if (leafIndex >= 170) {
+        console.error('No more available leaf positions');
+        alert('The tree is full! No more leaves can be added.');
+        setIsAddingLeaf(false);
+        return;
+      }
+      
       console.log('Saving leaf with leafIndex:', leafIndex, 'for name:', name);
       
       // Validate leafIndex is within bounds
@@ -183,10 +221,20 @@ export default function Tree() {
         console.log('Adding leaf:', leafIndex, 'with name:', name);
         console.log('Current leafNames map:', Array.from(newLeafNames.entries()));
         
+        // Calculate next available leaf index (skip blocked indices)
+        let nextIndex = leafIndex + 1;
+        const BASE_LEAVES_COUNT = 40;
+        const blockedStartIndex = 170 - BASE_LEAVES_COUNT; // 130
+        
+        // Skip blocked indices (130-169)
+        while (nextIndex >= blockedStartIndex && nextIndex < 170) {
+          nextIndex++;
+        }
+        
         return {
           visibleLeaves: newVisibleLeaves,
           leafNames: newLeafNames,
-          nextLeafIndex: prev.nextLeafIndex + 1,
+          nextLeafIndex: nextIndex,
           totalLeaves: prev.totalLeaves
         };
       });
