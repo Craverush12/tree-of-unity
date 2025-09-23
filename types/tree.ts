@@ -10,6 +10,10 @@ export interface LeafData {
   centerX: number;
   centerY: number;
   index: number;
+  width: number;
+  height: number;
+  area: number;
+  isSmall: boolean;
 }
 
 export interface LeafExtractionResult {

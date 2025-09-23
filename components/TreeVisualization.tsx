@@ -59,6 +59,14 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
     return Array.from({ length: BASE_LEAVES_COUNT }, (_, i) => startIndex + i);
   };
 
+  // Get indices of small leaves that should be blocked from having names
+  const getSmallLeafIndices = () => {
+    return leaves
+      .map((leaf, index) => ({ leaf, index }))
+      .filter(({ leaf }) => leaf.isSmall)
+      .map(({ index }) => index);
+  };
+
   // Calculate leaf angle based on its position relative to tree center
   const getLeafAngle = (leafData: any, leafIndex: number): number => {
     const treeCenterX = 710; // Approximate tree center
@@ -141,10 +149,17 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
 
     const leafIndex = treeState.nextLeafIndex;
     
-    // Ensure we don't assign names to base leaves (last 40)
+    // Ensure we don't assign names to base leaves (last 40) or small leaves
     const blockedIndices = getBlockedLeafIndices();
+    const smallLeafIndices = getSmallLeafIndices();
+    
     if (blockedIndices.includes(leafIndex)) {
       console.warn('Cannot assign names to base leaves');
+      return;
+    }
+    
+    if (smallLeafIndices.includes(leafIndex)) {
+      console.warn('Cannot assign names to small leaves');
       return;
     }
     
@@ -254,11 +269,35 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
           );
         })}
         
+        {/* Render small leaves - always visible, no names */}
+        {getSmallLeafIndices().map((leafIndex) => {
+          const leafData = leaves[leafIndex];
+          if (!leafData) return null;
+          
+          return (
+            <g key={`small-leaf-${leafIndex}`} className="small-leaf-group">
+              <path
+                d={leafData.path}
+                fill="#A6D061"
+                className="small-leaf-path"
+                style={{
+                  opacity: 0.5, // More transparent than base leaves to show they're blocked
+                  transformOrigin: `${leafData.centerX}px ${leafData.centerY}px`
+                }}
+              />
+              {/* No text for small leaves */}
+            </g>
+          );
+        })}
+        
         {/* Render named leaves (user-added leaves) */}
         {Array.from(treeState.visibleLeaves).map(leafIndex => {
-          // Skip base leaves (last 40)
+          // Skip base leaves (last 40) and small leaves
           const blockedIndices = getBlockedLeafIndices();
+          const smallLeafIndices = getSmallLeafIndices();
+          
           if (blockedIndices.includes(leafIndex)) return null;
+          if (smallLeafIndices.includes(leafIndex)) return null;
           
           const leafData = leaves[leafIndex];
           const isNewlyAdded = newlyAddedLeaves.has(leafIndex);
