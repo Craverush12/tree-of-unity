@@ -172,19 +172,22 @@ export default function Tree() {
       // Set flag to prevent subscription from triggering
       setIsAddingLeaf(true);
       
-      // Find the next available leaf index (skip blocked indices)
-      const BASE_LEAVES_COUNT = 40;
-      const blockedStartIndex = 170 - BASE_LEAVES_COUNT; // 130
-      
-      let leafIndex = treeState.nextLeafIndex;
-      
-      // Skip blocked indices (130-169)
-      while (leafIndex >= blockedStartIndex && leafIndex < 170) {
-        leafIndex++;
+      // Get the next available leafIndex using simple sequential logic
+      const leaves = await leavesDB.getAllLeaves()
+      const usedIndices = new Set(leaves.map(l => l.leafIndex).filter(idx => idx !== undefined))
+
+      let leafIndex = null
+
+      // Search ONLY in valid range 0-129 (never 130-169)
+      for (let i = 0; i < 130; i++) {
+        if (!usedIndices.has(i)) {
+          leafIndex = i
+          break
+        }
       }
-      
-      // If we've reached the end, we can't add more leaves
-      if (leafIndex >= 170) {
+
+      // If no available index found, tree is full
+      if (leafIndex === null) {
         console.error('No more available leaf positions');
         alert('The tree is full! No more leaves can be added.');
         setIsAddingLeaf(false);

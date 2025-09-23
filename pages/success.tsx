@@ -39,8 +39,26 @@ export default function Success() {
         selectedPosition = { x: 1080, y: 720 }
       }
       
-      // Get the next available leafIndex (you might want to implement a proper counter)
-      const leafIndex = Math.floor(Math.random() * 170) // Temporary - should be proper counter
+      // Get the next available leafIndex using simple sequential logic
+      const leaves = await leavesDB.getAllLeaves()
+      const usedIndices = new Set(leaves.map(l => l.leafIndex).filter(idx => idx !== undefined))
+
+      let leafIndex = null
+
+      // Search ONLY in valid range 0-129 (never 130-169)
+      for (let i = 0; i < 130; i++) {
+        if (!usedIndices.has(i)) {
+          leafIndex = i
+          break
+        }
+      }
+
+      // If no available index found, tree is full
+      if (leafIndex === null) {
+        alert('The tree is full! No more leaves can be added.')
+        router.push('/tree')
+        return
+      }
       
       // Save to database with new structure
       const leafData = {
