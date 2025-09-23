@@ -122,7 +122,7 @@
 
 /* Class for newly added leaves with enhanced glow effect */
 .newlyAdded {
-  animation: leafGlow 3s ease-in-out forwards;
+  animation: leafGlow 4s ease-in-out forwards;
   /* Additional glow properties for extra intensity */
   filter: drop-shadow(0 0 20px #00FF00) drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00);
   box-shadow: 0 0 30px #00FF00, 0 0 60px #00FF00, 0 0 90px #00FF00;

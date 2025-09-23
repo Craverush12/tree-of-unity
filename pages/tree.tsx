@@ -130,15 +130,11 @@ export default function Tree() {
         
         console.log('Adding new leaf from subscription:', leafIndex, newLeaf.name);
         
-        // Add to newly added leaves for glow effect (from subscription with delay)
-        setTimeout(() => {
-          console.log(`Adding leaf ${leafIndex} to newlyAddedLeaves from subscription`);
-          setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
-        }, 100);
+        // Add to newly added leaves for glow effect (from subscription) - do this immediately
+        setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
         
-        // Remove from newly added leaves after 4 seconds (longer duration for subscription)
+        // Remove from newly added leaves after 4 seconds (increased to match CSS animation duration)
         setTimeout(() => {
-          console.log(`Removing leaf ${leafIndex} from newlyAddedLeaves (subscription animation complete)`);
           setNewlyAddedLeaves(prev => {
             const newSet = new Set(prev);
             newSet.delete(leafIndex);
@@ -249,15 +245,11 @@ export default function Tree() {
         ...prev.slice(0, 9) // Keep only last 10
       ]);
       
-      // Add to newly added leaves for glow effect (with small delay to ensure render)
-      setTimeout(() => {
-        console.log(`Adding leaf ${leafIndex} to newlyAddedLeaves for glow animation`);
-        setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
-      }, 100);
+      // Add to newly added leaves for glow effect - do this immediately
+      setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
       
-      // Remove from newly added leaves after 4 seconds (consistent with subscription)
+      // Remove from newly added leaves after 4 seconds (increased to match CSS animation duration)
       setTimeout(() => {
-        console.log(`Removing leaf ${leafIndex} from newlyAddedLeaves (animation complete)`);
         setNewlyAddedLeaves(prev => {
           const newSet = new Set(prev);
           newSet.delete(leafIndex);
