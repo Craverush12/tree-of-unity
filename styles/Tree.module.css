@@ -61,61 +61,126 @@
   }
 }
 
-/* Glow animation for newly added leaves */
+/* Enhanced Glow animation for newly added leaves */
 @keyframes leafGlow {
   0% {
-    filter: drop-shadow(0 0 20px #00FF00) drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 80px #00FF00);
+    filter: drop-shadow(0 0 30px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 90px #00FF00) drop-shadow(0 0 120px #00FF00) drop-shadow(0 0 150px #00FF00);
     transform: scale(1);
+    box-shadow: 0 0 50px #00FF00, 0 0 100px #00FF00, 0 0 150px #00FF00;
   }
   10% {
-    filter: drop-shadow(0 0 30px #00FF00) drop-shadow(0 0 50px #00FF00) drop-shadow(0 0 70px #00FF00) drop-shadow(0 0 90px #00FF00);
-    transform: scale(1.1);
+    filter: drop-shadow(0 0 50px #00FF00) drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 110px #00FF00) drop-shadow(0 0 140px #00FF00) drop-shadow(0 0 170px #00FF00);
+    transform: scale(1.15);
+    box-shadow: 0 0 80px #00FF00, 0 0 120px #00FF00, 0 0 180px #00FF00;
   }
   20% {
-    filter: drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 100px #00FF00);
-    transform: scale(1.15);
+    filter: drop-shadow(0 0 70px #00FF00) drop-shadow(0 0 100px #00FF00) drop-shadow(0 0 130px #00FF00) drop-shadow(0 0 160px #00FF00) drop-shadow(0 0 190px #00FF00);
+    transform: scale(1.25);
+    box-shadow: 0 0 100px #00FF00, 0 0 150px #00FF00, 0 0 200px #00FF00;
   }
   30% {
-    filter: drop-shadow(0 0 35px #00FF00) drop-shadow(0 0 55px #00FF00) drop-shadow(0 0 75px #00FF00) drop-shadow(0 0 95px #00FF00);
-    transform: scale(1.12);
+    filter: drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 90px #00FF00) drop-shadow(0 0 120px #00FF00) drop-shadow(0 0 150px #00FF00) drop-shadow(0 0 180px #00FF00);
+    transform: scale(1.2);
+    box-shadow: 0 0 90px #00FF00, 0 0 130px #00FF00, 0 0 190px #00FF00;
   }
   40% {
-    filter: drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 65px #00FF00) drop-shadow(0 0 85px #00FF00) drop-shadow(0 0 105px #00FF00);
-    transform: scale(1.18);
+    filter: drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 110px #00FF00) drop-shadow(0 0 140px #00FF00) drop-shadow(0 0 170px #00FF00) drop-shadow(0 0 200px #00FF00);
+    transform: scale(1.3);
+    box-shadow: 0 0 120px #00FF00, 0 0 170px #00FF00, 0 0 220px #00FF00;
   }
   50% {
-    filter: drop-shadow(0 0 50px #00FF00) drop-shadow(0 0 70px #00FF00) drop-shadow(0 0 90px #00FF00) drop-shadow(0 0 110px #00FF00);
-    transform: scale(1.2);
+    filter: drop-shadow(0 0 90px #00FF00) drop-shadow(0 0 120px #00FF00) drop-shadow(0 0 150px #00FF00) drop-shadow(0 0 180px #00FF00) drop-shadow(0 0 210px #00FF00);
+    transform: scale(1.35);
+    box-shadow: 0 0 140px #00FF00, 0 0 190px #00FF00, 0 0 240px #00FF00;
   }
   60% {
-    filter: drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 100px #00FF00);
-    transform: scale(1.15);
+    filter: drop-shadow(0 0 70px #00FF00) drop-shadow(0 0 100px #00FF00) drop-shadow(0 0 130px #00FF00) drop-shadow(0 0 160px #00FF00) drop-shadow(0 0 190px #00FF00);
+    transform: scale(1.25);
+    box-shadow: 0 0 110px #00FF00, 0 0 160px #00FF00, 0 0 210px #00FF00;
   }
   70% {
-    filter: drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 65px #00FF00) drop-shadow(0 0 85px #00FF00) drop-shadow(0 0 105px #00FF00);
-    transform: scale(1.18);
+    filter: drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 110px #00FF00) drop-shadow(0 0 140px #00FF00) drop-shadow(0 0 170px #00FF00) drop-shadow(0 0 200px #00FF00);
+    transform: scale(1.3);
+    box-shadow: 0 0 120px #00FF00, 0 0 170px #00FF00, 0 0 220px #00FF00;
   }
   80% {
-    filter: drop-shadow(0 0 35px #00FF00) drop-shadow(0 0 55px #00FF00) drop-shadow(0 0 75px #00FF00) drop-shadow(0 0 95px #00FF00);
-    transform: scale(1.12);
+    filter: drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 90px #00FF00) drop-shadow(0 0 120px #00FF00) drop-shadow(0 0 150px #00FF00) drop-shadow(0 0 180px #00FF00);
+    transform: scale(1.2);
+    box-shadow: 0 0 90px #00FF00, 0 0 130px #00FF00, 0 0 190px #00FF00;
   }
   90% {
-    filter: drop-shadow(0 0 25px #00FF00) drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 65px #00FF00) drop-shadow(0 0 85px #00FF00);
-    transform: scale(1.08);
+    filter: drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 70px #00FF00) drop-shadow(0 0 100px #00FF00) drop-shadow(0 0 130px #00FF00) drop-shadow(0 0 160px #00FF00);
+    transform: scale(1.1);
+    box-shadow: 0 0 70px #00FF00, 0 0 110px #00FF00, 0 0 150px #00FF00;
   }
   100% {
-    filter: drop-shadow(0 0 15px #00FF00) drop-shadow(0 0 30px #00FF00) drop-shadow(0 0 45px #00FF00) drop-shadow(0 0 60px #00FF00);
+    filter: drop-shadow(0 0 20px #00FF00) drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 80px #00FF00) drop-shadow(0 0 100px #00FF00);
     transform: scale(1.05);
+    box-shadow: 0 0 30px #00FF00, 0 0 60px #00FF00, 0 0 90px #00FF00;
   }
 }
 
-/* Class for newly added leaves with glow effect */
+/* Class for newly added leaves with enhanced glow effect */
 .newlyAdded {
   animation: leafGlow 3s ease-in-out forwards;
+  /* Additional glow properties for extra intensity */
+  filter: drop-shadow(0 0 20px #00FF00) drop-shadow(0 0 40px #00FF00) drop-shadow(0 0 60px #00FF00);
+  box-shadow: 0 0 30px #00FF00, 0 0 60px #00FF00, 0 0 90px #00FF00;
+  /* Make the glow more visible */
+  z-index: 10;
+  position: relative;
 }
 
 .leafPath.newLeaf {
   animation: leafAppear 0.5s ease-out;
+}
+
+/* Alternative glow effects you can use by changing the class */
+
+/* Ultra-strong glow effect */
+.newlyAdded.ultraGlow {
+  animation: leafGlow 4s ease-in-out forwards;
+  filter: drop-shadow(0 0 50px #00FF00) drop-shadow(0 0 100px #00FF00) drop-shadow(0 0 150px #00FF00) drop-shadow(0 0 200px #00FF00);
+  box-shadow: 0 0 60px #00FF00, 0 0 120px #00FF00, 0 0 180px #00FF00, 0 0 240px #00FF00;
+}
+
+/* Pulsing glow effect */
+.newlyAdded.pulseGlow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 30px #00FF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 90px #00FF00);
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 120px #00FF00) drop-shadow(0 0 180px #00FF00);
+    transform: scale(1.1);
+  }
+}
+
+/* Rainbow glow effect */
+.newlyAdded.rainbowGlow {
+  animation: rainbowGlow 3s ease-in-out forwards;
+}
+
+@keyframes rainbowGlow {
+  0% {
+    filter: drop-shadow(0 0 30px #FF0000) drop-shadow(0 0 60px #FF8000) drop-shadow(0 0 90px #FFFF00);
+  }
+  25% {
+    filter: drop-shadow(0 0 30px #FFFF00) drop-shadow(0 0 60px #00FF00) drop-shadow(0 0 90px #00FFFF);
+  }
+  50% {
+    filter: drop-shadow(0 0 30px #00FFFF) drop-shadow(0 0 60px #0080FF) drop-shadow(0 0 90px #8000FF);
+  }
+  75% {
+    filter: drop-shadow(0 0 30px #8000FF) drop-shadow(0 0 60px #FF00FF) drop-shadow(0 0 90px #FF0080);
+  }
+  100% {
+    filter: drop-shadow(0 0 30px #FF0000) drop-shadow(0 0 60px #FF8000) drop-shadow(0 0 90px #FFFF00);
+  }
 }
 
 .leafGroup {
