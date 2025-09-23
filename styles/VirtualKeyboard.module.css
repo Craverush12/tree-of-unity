@@ -1,0 +1,234 @@
+.keyboard {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(200, 230, 150, 0.95);
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(0, 67, 22, 0.3);
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  z-index: 1000;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  max-width: 90vw;
+}
+
+.keyboardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: fit-content;
+}
+
+.keyRow {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.key {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(0, 67, 22, 0.2);
+  border-radius: 8px;
+  color: #004316;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 12px 16px;
+  min-width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.key:hover {
+  background-color: rgba(0, 67, 22, 0.1);
+  border-color: rgba(0, 67, 22, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.key:active {
+  transform: translateY(0);
+  background-color: rgba(0, 67, 22, 0.2);
+}
+
+.letterKey {
+  flex: 1;
+  max-width: 60px;
+}
+
+.specialKey {
+  background-color: rgba(0, 67, 22, 0.1);
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.specialKey:hover {
+  background-color: rgba(0, 67, 22, 0.2);
+}
+
+.specialKey.active {
+  background-color: rgba(0, 67, 22, 0.3);
+  border-color: rgba(0, 67, 22, 0.6);
+}
+
+.enterKey {
+  background-color: rgba(0, 67, 22, 0.2);
+  color: white;
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.enterKey:hover {
+  background-color: rgba(0, 67, 22, 0.4);
+}
+
+/* 4K Desktop Styling (3840x2160) */
+@media (min-width: 3840px) {
+  .keyboard {
+    padding: 40px;
+    border: 6px solid rgba(0, 67, 22, 0.3);
+    border-radius: 40px 40px 0 0;
+    max-width: 80vw;
+  }
+
+  .keyboardContainer {
+    gap: 24px;
+  }
+
+  .keyRow {
+    gap: 16px;
+  }
+
+  .key {
+    font-size: 32px;
+    padding: 24px 32px;
+    min-width: 100px;
+    height: 100px;
+    border-radius: 16px;
+    border-width: 4px;
+  }
+
+  .letterKey {
+    max-width: 120px;
+  }
+
+  .specialKey {
+    min-width: 160px;
+    font-size: 28px;
+  }
+
+  .enterKey {
+    min-width: 200px;
+    font-size: 28px;
+  }
+}
+
+/* Tablet and smaller desktop */
+@media (max-width: 1024px) {
+  .keyboard {
+    padding: 15px;
+    max-width: 95vw;
+  }
+
+  .keyboardContainer {
+    gap: 10px;
+  }
+
+  .keyRow {
+    gap: 6px;
+  }
+
+  .key {
+    font-size: 14px;
+    padding: 10px 14px;
+    min-width: 45px;
+    height: 45px;
+  }
+
+  .letterKey {
+    max-width: 55px;
+  }
+
+  .specialKey {
+    min-width: 70px;
+  }
+
+  .enterKey {
+    min-width: 90px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .keyboard {
+    padding: 10px;
+    max-width: 98vw;
+  }
+
+  .keyboardContainer {
+    gap: 8px;
+  }
+
+  .keyRow {
+    gap: 4px;
+  }
+
+  .key {
+    font-size: 12px;
+    padding: 8px 12px;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 6px;
+  }
+
+  .letterKey {
+    max-width: 50px;
+  }
+
+  .specialKey {
+    min-width: 60px;
+    font-size: 11px;
+  }
+
+  .enterKey {
+    min-width: 80px;
+    font-size: 11px;
+  }
+}
+
+/* Very small mobile */
+@media (max-width: 480px) {
+  .keyboard {
+    padding: 8px;
+    max-width: 100vw;
+  }
+
+  .key {
+    font-size: 11px;
+    padding: 6px 10px;
+    min-width: 35px;
+    height: 35px;
+  }
+
+  .letterKey {
+    max-width: 45px;
+  }
+
+  .specialKey {
+    min-width: 55px;
+    font-size: 10px;
+  }
+
+  .enterKey {
+    min-width: 70px;
+    font-size: 10px;
+  }
+}

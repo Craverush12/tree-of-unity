@@ -1,14 +1,64 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { leavesDB } from '../lib/firebase'
+import VirtualKeyboard from '../components/VirtualKeyboard'
 
 export default function Home() {
   const [name, setName] = useState('')
   const [city, setCity] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [activeInput, setActiveInput] = useState<'name' | 'city' | null>(null)
   const router = useRouter()
+  const nameInputRef = useRef<HTMLInputElement>(null)
+  const citySelectRef = useRef<HTMLSelectElement>(null)
+
+  // Virtual keyboard handlers
+  const handleKeyPress = (key: string) => {
+    if (activeInput === 'name') {
+      setName(prev => prev + key)
+    } else if (activeInput === 'city') {
+      // For city, we'll simulate typing to filter options
+      const currentValue = city
+      const newValue = currentValue + key
+      setCity(newValue)
+    }
+  }
+
+  const handleBackspace = () => {
+    if (activeInput === 'name') {
+      setName(prev => prev.slice(0, -1))
+    } else if (activeInput === 'city') {
+      setCity(prev => prev.slice(0, -1))
+    }
+  }
+
+  const handleEnter = () => {
+    if (activeInput === 'name' && citySelectRef.current) {
+      setActiveInput('city')
+      citySelectRef.current.focus()
+    } else if (activeInput === 'city') {
+      handleSubmit(new Event('submit') as any)
+    }
+  }
+
+  const handleClear = () => {
+    if (activeInput === 'name') {
+      setName('')
+    } else if (activeInput === 'city') {
+      setCity('')
+    }
+  }
+
+  const handleInputFocus = (inputType: 'name' | 'city') => {
+    setActiveInput(inputType)
+  }
+
+  const handleInputBlur = () => {
+    // Keep keyboard visible even when inputs lose focus
+    // setActiveInput(null)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -80,22 +130,29 @@ export default function Home() {
               <div className={styles.inputGroup}>
                 <label htmlFor="name" className={styles.label}>Name</label>
                 <input
+                  ref={nameInputRef}
                   type="text"
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className={styles.input}
+                  onFocus={() => handleInputFocus('name')}
+                  onBlur={handleInputBlur}
+                  className={`${styles.input} ${activeInput === 'name' ? styles.activeInput : ''}`}
                   required
+                  readOnly
                 />
               </div>
               
               <div className={styles.inputGroup}>
                 <label htmlFor="city" className={styles.label}>City</label>
                 <select
+                  ref={citySelectRef}
                   id="city"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className={styles.select}
+                  onFocus={() => handleInputFocus('city')}
+                  onBlur={handleInputBlur}
+                  className={`${styles.select} ${activeInput === 'city' ? styles.activeInput : ''}`}
                   required
                 >
                   <option value="">Choose your city</option>
@@ -110,6 +167,14 @@ export default function Home() {
             </button>
           </form>
         </div>
+        
+        <VirtualKeyboard
+          onKeyPress={handleKeyPress}
+          onBackspace={handleBackspace}
+          onEnter={handleEnter}
+          onClear={handleClear}
+          activeInput={activeInput}
+        />
       </main>
     </>
   )

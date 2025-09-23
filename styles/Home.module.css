@@ -76,6 +76,12 @@
   background-color: rgba(200, 230, 150, 1);
 }
 
+.activeInput {
+  background-color: rgba(200, 230, 150, 1) !important;
+  border: 3px solid rgba(0, 67, 22, 0.6) !important;
+  box-shadow: 0 0 10px rgba(0, 67, 22, 0.3) !important;
+}
+
 .select {
   cursor: pointer;
   appearance: none;
@@ -84,6 +90,14 @@
   background-position: right 15px center;
   background-size: 20px;
   padding-right: 50px;
+}
+
+.select option {
+  color: #333;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 500;
+  padding: 15px 20px;
+  background-color: rgba(200, 230, 150, 1);
 }
 
 .submitButton {
@@ -106,7 +120,7 @@
 /* 4K screen scaling */
 @media (min-width: 3840px) {
   .container {
-    margin-top: 25vh;
+    margin-top: 10vh;
     max-width: 1200px;
   }
   
@@ -151,9 +165,13 @@
     font-size: 64px;
     font-style: normal;
     font-weight: 500;
-    padding: 20px;
+    padding: 40px 50px;
     height: 212px;
-    line-height: 212px;
+    line-height: 132px;
+    background-color: rgba(200, 230, 150, 1);
+    width: 996px;
+    max-width: 996px;
+    box-sizing: border-box;
   }
   
   .form {
@@ -163,6 +181,11 @@
   .submitButton {
     width: 996px;
     height: 212px;
+  }
+  
+  .activeInput {
+    border: 6px solid rgba(0, 67, 22, 0.6) !important;
+    box-shadow: 0 0 20px rgba(0, 67, 22, 0.3) !important;
   }
 }
 
@@ -181,6 +204,11 @@
   .select {
     font-size: 1rem;
     padding: 12px 15px;
+  }
+  
+  .select option {
+    padding: 12px 15px;
+    font-size: 1rem;
   }
   
   .submitButton {
