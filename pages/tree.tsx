@@ -176,7 +176,7 @@ export default function Tree() {
       const leaves = await leavesDB.getAllLeaves()
       const usedIndices = new Set(leaves.map(l => l.leafIndex).filter(idx => idx !== undefined))
 
-      let leafIndex = null
+      let leafIndex: number | null = null
 
       // Search ONLY in valid range 0-129 (never 130-169)
       for (let i = 0; i < 130; i++) {
@@ -186,10 +186,54 @@ export default function Tree() {
         }
       }
 
-      // If no available index found, tree is full
+      // If no available index found, tree is full - implement FIFO replacement
       if (leafIndex === null) {
-        console.error('No more available leaf positions');
-        alert('The tree is full! No more leaves can be added.');
+        console.log('Tree is full, implementing FIFO replacement');
+        
+        // Find the oldest leaf (first added) to replace
+        const allLeaves = await leavesDB.getAllLeaves();
+        const sortedLeaves = allLeaves
+          .filter(leaf => leaf.leafIndex !== undefined && leaf.leafIndex < 130) // Only named leaves
+          .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        
+        if (sortedLeaves.length === 0) {
+          console.error('No leaves found to replace');
+          alert('Error: No leaves found to replace.');
+          setIsAddingLeaf(false);
+          return;
+        }
+        
+        // Get the oldest leaf to replace
+        const oldestLeaf = sortedLeaves[0];
+        leafIndex = oldestLeaf.leafIndex;
+        
+        console.log(`Replacing oldest leaf at index ${leafIndex} (${oldestLeaf.name}) with new leaf (${name})`);
+        
+        // Remove the old leaf from database
+        await leavesDB.removeLeaf(oldestLeaf.leafIndex);
+        
+        // Update local state to remove the old leaf
+        setTreeState(prev => {
+          const newVisibleLeaves = new Set(prev.visibleLeaves);
+          const newLeafNames = new Map(prev.leafNames);
+          
+          if (leafIndex !== null) {
+            newVisibleLeaves.delete(leafIndex);
+            newLeafNames.delete(leafIndex);
+          }
+          
+          return {
+            ...prev,
+            visibleLeaves: newVisibleLeaves,
+            leafNames: newLeafNames
+          };
+        });
+      }
+      
+      // Ensure leafIndex is not null before proceeding
+      if (leafIndex === null) {
+        console.error('leafIndex is still null after replacement logic');
+        alert('Error: Unable to find a position for the new leaf.');
         setIsAddingLeaf(false);
         return;
       }
