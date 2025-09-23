@@ -46,6 +46,7 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
   const [loading, setLoading] = useState(true);
   const [showVideoOverlay, setShowVideoOverlay] = useState(false);
   const [showLottieAnimation, setShowLottieAnimation] = useState(false);
+  const [showTextAnimation, setShowTextAnimation] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
   const currentLeafIndexRef = useRef(0);
   const previousLeafCountRef = useRef(0);
@@ -116,15 +117,23 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
     
     // If a new leaf was added (count increased) - trigger immediately for any new leaf
     if (currentLeafCount > previousLeafCount) {
-      console.log('New leaf detected, showing Lottie animation');
+      console.log('New leaf detected, showing Lottie animation and text animation');
       setShowLottieAnimation(true);
+      setShowTextAnimation(true);
       
-      // Hide animation after it finishes (Lottie animations typically last 2-5 seconds)
-      const timer = setTimeout(() => {
+      // Hide animations after they finish
+      const lottieTimer = setTimeout(() => {
         setShowLottieAnimation(false);
       }, 4000);
       
-      return () => clearTimeout(timer);
+      const textTimer = setTimeout(() => {
+        setShowTextAnimation(false);
+      }, 3000);
+      
+      return () => {
+        clearTimeout(lottieTimer);
+        clearTimeout(textTimer);
+      };
     }
     
     // Update the previous count
@@ -198,6 +207,15 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
 
   return (
     <div className="tree-container">
+      {/* Text Animation */}
+      {showTextAnimation && (
+        <div className={styles.textAnimation}>
+          <div className={styles.textAnimationContent}>
+            A new leaf has been added!
+          </div>
+        </div>
+      )}
+      
       <svg
         ref={svgRef}
         width="1421"
