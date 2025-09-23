@@ -130,17 +130,21 @@ export default function Tree() {
         
         console.log('Adding new leaf from subscription:', leafIndex, newLeaf.name);
         
-        // Add to newly added leaves for glow effect (from subscription)
-        setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
-        
-        // Remove from newly added leaves after 3 seconds
+        // Add to newly added leaves for glow effect (from subscription with delay)
         setTimeout(() => {
+          console.log(`Adding leaf ${leafIndex} to newlyAddedLeaves from subscription`);
+          setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
+        }, 100);
+        
+        // Remove from newly added leaves after 4 seconds (longer duration for subscription)
+        setTimeout(() => {
+          console.log(`Removing leaf ${leafIndex} from newlyAddedLeaves (subscription animation complete)`);
           setNewlyAddedLeaves(prev => {
             const newSet = new Set(prev);
             newSet.delete(leafIndex);
             return newSet;
           });
-        }, 3000);
+        }, 4000);
         
         // Calculate next available leaf index (skip blocked indices)
         let nextIndex = Math.max(prev.nextLeafIndex, leafIndex + 1);
@@ -245,17 +249,21 @@ export default function Tree() {
         ...prev.slice(0, 9) // Keep only last 10
       ]);
       
-      // Add to newly added leaves for glow effect
-      setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
-      
-      // Remove from newly added leaves after 3 seconds
+      // Add to newly added leaves for glow effect (with small delay to ensure render)
       setTimeout(() => {
+        console.log(`Adding leaf ${leafIndex} to newlyAddedLeaves for glow animation`);
+        setNewlyAddedLeaves(prev => new Set(prev).add(leafIndex));
+      }, 100);
+      
+      // Remove from newly added leaves after 4 seconds (consistent with subscription)
+      setTimeout(() => {
+        console.log(`Removing leaf ${leafIndex} from newlyAddedLeaves (animation complete)`);
         setNewlyAddedLeaves(prev => {
           const newSet = new Set(prev);
           newSet.delete(leafIndex);
           return newSet;
         });
-      }, 3000);
+      }, 4000);
       
       // Reset flag after a short delay
     setTimeout(() => {

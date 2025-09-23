@@ -320,6 +320,11 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
           const leafData = leaves[leafIndex];
           const isNewlyAdded = newlyAddedLeaves.has(leafIndex);
           const className = `${styles.leafPath} ${isNewlyAdded ? styles.newlyAdded : ''}`;
+          
+          // Debug log for animation trigger
+          if (isNewlyAdded) {
+            console.log(`Leaf ${leafIndex} should show glow animation`);
+          }
           if (!leafData) return null;
           
           return (
