@@ -1,6 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { TreeState, LeafData } from '../types/tree';
 import { loadAndExtractLeaves } from '../utils/leafExtractor';
+import Lottie from 'lottie-react';
+import leaflotAnimation from '../public/leaflot.json';
+
+// Function to remove background from Lottie animation
+const removeLottieBackground = (animationData: any) => {
+  const modifiedData = JSON.parse(JSON.stringify(animationData));
+  
+  // Remove background color if it exists
+  if (modifiedData.bg) {
+    delete modifiedData.bg;
+  }
+  
+  // Set transparent background
+  modifiedData.bg = 'transparent';
+  
+  return modifiedData;
+};
 
 interface TreeVisualizationProps {
   treeState: {
@@ -24,6 +42,7 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
   const [leaves, setLeaves] = useState<LeafData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showVideoOverlay, setShowVideoOverlay] = useState(false);
+  const [showLottieAnimation, setShowLottieAnimation] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
   const currentLeafIndexRef = useRef(0);
   const previousLeafCountRef = useRef(0);
@@ -84,15 +103,15 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
     const currentLeafCount = treeState.visibleLeaves.size;
     const previousLeafCount = previousLeafCountRef.current;
     
-    // If a new leaf was added (count increased)
-    if (currentLeafCount > previousLeafCount && previousLeafCount > 0) {
-      console.log('New leaf detected, showing video overlay');
-      setShowVideoOverlay(true);
+    // If a new leaf was added (count increased) - trigger immediately for any new leaf
+    if (currentLeafCount > previousLeafCount) {
+      console.log('New leaf detected, showing Lottie animation');
+      setShowLottieAnimation(true);
       
-      // Hide video after it finishes playing (assuming 3 seconds duration)
+      // Hide animation after it finishes (Lottie animations typically last 2-5 seconds)
       const timer = setTimeout(() => {
-        setShowVideoOverlay(false);
-      }, 3000);
+        setShowLottieAnimation(false);
+      }, 4000);
       
       return () => clearTimeout(timer);
     }
@@ -313,7 +332,65 @@ const TreeVisualization: React.FC<TreeVisualizationProps> = ({
           </video>
         </div>
       )} */}
+      
+      {/* Full-screen Lottie Animation Portal */}
+      <LottieAnimationPortal 
+        show={showLottieAnimation} 
+        onComplete={() => setShowLottieAnimation(false)} 
+      />
     </div>
+  );
+};
+
+// Full-screen Lottie Animation Portal Component
+const LottieAnimationPortal: React.FC<{ show: boolean; onComplete: () => void }> = ({ show, onComplete }) => {
+  if (typeof window === 'undefined') return null;
+  
+  return createPortal(
+    show && (
+      <div 
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 99999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'transparent',
+          pointerEvents: 'none',
+          mixBlendMode: 'screen'
+        }}
+      >
+        <Lottie
+          animationData={removeLottieBackground(leaflotAnimation)}
+          loop={false}
+          autoplay={true}
+          style={{
+            width: '100vh',
+            height: '100vw',
+            objectFit: 'cover',
+            backgroundColor: 'transparent',
+            transform: 'rotate(90deg)',
+            transformOrigin: 'center center',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: '-50vw',
+            marginLeft: '-50vh'
+          }}
+          rendererSettings={{
+            preserveAspectRatio: 'xMidYMid slice'
+          }}
+          onComplete={onComplete}
+        />
+      </div>
+    ),
+    document.body
   );
 };
 
